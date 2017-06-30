@@ -1,0 +1,48 @@
+version: '2'
+
+services:
+  nginx:
+    restart: always
+    image: nginx:alpine
+    volumes:
+      - ./conf.d:/etc/nginx/conf.d
+      - ./htpasswd:/etc/nginx/htpasswd
+      - ./dhparam.pem:/etc/nginx/dhparam.pem
+      - ./ssl_params:/etc/nginx/ssl_params
+      - walklog_public:/usr/share/nginx/walk.asharpminor.com
+      - asharpminor.com:/usr/share/nginx/asharpminor.com
+      - /home/sugi/apps/mastodon/public:/usr/share/nginx/mstdn.asharpminor.com
+      - letsencrypt:/etc/letsencrypt
+      - ./logs:/var/log/nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    links:
+      - webhook:webhook
+    external_links:
+      - walklog_web_1:walklog_web
+      - mastodon_web_1:mastodon_web
+      - mastodon_streaming_1:mastodon_streaming
+    depends_on:
+      - webhook
+  webhook:
+    restart: always
+    build: webhook
+    volumes:
+      - /home/sugi/apps/asharpminor.com:/src
+      - asharpminor.com:/output
+  certbot:
+    image: adamant/alpine-certbot
+    volumes:
+      - letsencrypt:/etc/letsencrypt
+
+volumes:
+  asharpminor.com: {}
+  walklog_public:
+    external: true
+  letsencrypt: {}
+
+networks:
+  default:
+    external:
+      name: asm_front

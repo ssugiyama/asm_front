@@ -1,0 +1,5 @@
+host = "0.0.0.0"
+
+[[hook]]
+event = "push"
+command = "nohup /update_asm.sh > /dev/null 2>&1 &"

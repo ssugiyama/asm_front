@@ -1,8 +1,14 @@
+This is the front server of https://asharpminor.com
+
 # Installation
 
-create htpasswd file and execute following commands.
+prepare following files.
 
-    openssl dhparam 2048 -out dhparam.pem
-    docker network create  --driver bridge asm_front
-    echo walklog_web_1 mastodon_web_1 mastodon_streaming_1 | xargs -n 1 docker network connect asm_front 
+- htpasswd
+- dhparam.pem
+- webhook/.env
+
+execute following command.
+
     docker-compose up -d
+    docker-compose run --rm webhook /bin/sh -c 'cd /src; npm install'

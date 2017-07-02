@@ -4,6 +4,7 @@ services:
   nginx:
     restart: always
     image: nginx:alpine
+    network_mode: host
     volumes:
       - ./conf.d:/etc/nginx/conf.d
       - ./htpasswd:/etc/nginx/htpasswd
@@ -17,12 +18,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    links:
-      - webhook:webhook
-    external_links:
-      - walklog_web_1:walklog_web
-      - mastodon_web_1:mastodon_web
-      - mastodon_streaming_1:mastodon_streaming
     depends_on:
       - webhook
   webhook:
@@ -31,6 +26,8 @@ services:
     volumes:
       - /home/sugi/apps/asharpminor.com:/src
       - asharpminor.com:/output
+    ports:
+      - "127.0.0.1:18889:18889"
   certbot:
     image: adamant/alpine-certbot
     volumes:
@@ -41,8 +38,3 @@ volumes:
   walklog_public:
     external: true
   letsencrypt: {}
-
-networks:
-  default:
-    external:
-      name: asm_front

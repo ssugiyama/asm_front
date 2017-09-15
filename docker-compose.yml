@@ -6,7 +6,6 @@ services:
     image: nginx:alpine
     volumes:
       - ./conf.d:/etc/nginx/conf.d
-      - ./htpasswd:/etc/nginx/htpasswd
       - ./dhparam.pem:/etc/nginx/dhparam.pem
       - ./common_params:/etc/nginx/common_params
       - ./wkac_params:/etc/nginx/wkac_params      

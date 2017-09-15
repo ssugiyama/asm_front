@@ -4,7 +4,6 @@ This is the front server of https://asharpminor.com
 
 prepare following files.
 
-- htpasswd
 - dhparam.pem
 - webhook/.env
 

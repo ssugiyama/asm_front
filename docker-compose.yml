@@ -9,11 +9,11 @@ services:
       - ./dhparam.pem:/etc/nginx/dhparam.pem
       - ./common_params:/etc/nginx/common_params
       - ./wkac_params:/etc/nginx/wkac_params      
-      - walklog_public:/usr/share/nginx/walk.asharpminor.com
-      - asharpminor.com:/usr/share/nginx/asharpminor.com
+      - /home/sugi/apps/walklog/public:/usr/share/nginx/walk.asharpminor.com
+      - ./asharpminor.com:/usr/share/nginx/asharpminor.com
       - /home/sugi/apps/mastodon/public:/usr/share/nginx/mstdn.asharpminor.com
-      - letsencrypt:/etc/letsencrypt
-      - wkac:/var/lib/letsencrypt
+      - ./letsencrypt:/etc/letsencrypt
+      - ./wkac:/var/lib/letsencrypt
       - ./logs:/var/log/nginx
     network_mode: host
     ports:
@@ -26,19 +26,13 @@ services:
     build: webhook
     volumes:
       - /home/sugi/apps/asharpminor.com:/src
-      - asharpminor.com:/output
+      - ./asharpminor.com:/output
     ports:
       - "127.0.0.1:18889:18889"
   certbot:
     image: adamant/alpine-certbot
     volumes:
-      - letsencrypt:/etc/letsencrypt
+      - ./letsencrypt:/etc/letsencrypt
       - ./conf.d:/etc/nginx/conf.d
-      - wkac:/var/lib/letsencrypt      
+      - ./wkac:/var/lib/letsencrypt
 
-volumes:
-  asharpminor.com: {}
-  walklog_public:
-    external: true
-  letsencrypt: {}
-  wkac: {}

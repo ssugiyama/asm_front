@@ -1,5 +1,5 @@
 #! /bin/sh
 cd /src
 git pull
-npm install
+npm update
 /usr/local/bin/hugo --source="/src" --destination="/output"
